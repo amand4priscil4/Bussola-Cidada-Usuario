@@ -21,6 +21,7 @@ import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer } from 'recharts
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import usuarioService from '../services/usuarioService';
+import LoadingScreen from '../components/LoadingScreen';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -134,20 +135,16 @@ const Home = () => {
     }
   };
 
-  if (loading || !userData) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Typography>Carregando...</Typography>
-      </Box>
-    );
-  }
+ if (loading || !userData) {
+  return <LoadingScreen />;
+}
 
   return (
     <Box sx={{ pb: 10, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
       {/* Header com ilustração */}
       <Box
      sx={{
-       height: 200,
+       height: 150,
        backgroundImage: 'url(/banner-onibus.jpg)', // ← nome do arquivo
        backgroundSize: 'cover',
        backgroundPosition: 'center',

@@ -6,19 +6,17 @@ import {
   CardContent,
   Avatar,
   Chip,
-  List,
-  ListItem,
   LinearProgress,
 } from '@mui/material';
 import {
   EmojiEvents as TrophyIcon,
 } from '@mui/icons-material';
 import BottomNav from '../components/BottomNav';
+import LoadingScreen from '../components/LoadingScreen';
 import usuarioService from '../services/usuarioService';
 
 const Ranking = () => {
   const [userData, setUserData] = useState(null);
-  const [ranking, setRanking] = useState([]);
   const [conquistas, setConquistas] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +39,7 @@ const Ranking = () => {
         pontuacao: user.pontuacao || 0,
         nivel: Math.floor((user.pontuacao || 0) / 25) + 1,
         foto: 'https://i.pravatar.cc/150?img=47',
-        posicao: 12, // Mock - calcular depois com todos os usuários
+        posicao: 12,
       });
 
       // Mock de conquistas baseado na pontuação
@@ -82,19 +80,9 @@ const Ranking = () => {
 
       setConquistas(todasConquistas);
 
-      // Mock de ranking (será da API depois)
-      setRanking([
-        { posicao: 1, nome: 'João Silva', pontuacao: 450, foto: 'https://i.pravatar.cc/150?img=12' },
-        { posicao: 2, nome: 'Maria Santos', pontuacao: 380, foto: 'https://i.pravatar.cc/150?img=45' },
-        { posicao: 3, nome: 'Pedro Costa', pontuacao: 320, foto: 'https://i.pravatar.cc/150?img=33' },
-        { posicao: 4, nome: 'Ana Oliveira', pontuacao: 280, foto: 'https://i.pravatar.cc/150?img=20' },
-        { posicao: 5, nome: 'Carlos Lima', pontuacao: 250, foto: 'https://i.pravatar.cc/150?img=51' },
-      ]);
-
     } catch (error) {
       console.error('Erro ao carregar ranking:', error);
       
-      // Dados mocados
       setUserData({
         nome: 'Ana Silva',
         pontuacao: 100,
@@ -137,42 +125,30 @@ const Ranking = () => {
           pontosNecessarios: 250,
         },
       ]);
-
-      setRanking([
-        { posicao: 1, nome: 'João Silva', pontuacao: 450, foto: 'https://i.pravatar.cc/150?img=12' },
-        { posicao: 2, nome: 'Maria Santos', pontuacao: 380, foto: 'https://i.pravatar.cc/150?img=45' },
-        { posicao: 3, nome: 'Pedro Costa', pontuacao: 320, foto: 'https://i.pravatar.cc/150?img=33' },
-        { posicao: 4, nome: 'Ana Oliveira', pontuacao: 280, foto: 'https://i.pravatar.cc/150?img=20' },
-        { posicao: 5, nome: 'Carlos Lima', pontuacao: 250, foto: 'https://i.pravatar.cc/150?img=51' },
-      ]);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading || !userData) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Typography>Carregando...</Typography>
-      </Box>
-    );
+    return <LoadingScreen />;
   }
 
-  const proximoNivel = (userData.nivel * 25);
   const progressoNivel = ((userData.pontuacao % 25) / 25) * 100;
 
   return (
     <Box sx={{ pb: 10, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
-      {/* Header */}
+      {/* Header preto centralizado */}
       <Box
         sx={{
           backgroundColor: '#000',
           color: '#fff',
-          p: 2.5,
-          pb: 4,
+          py: 4,
+          px: 3,
+          textAlign: 'center',
         }}
       >
-        <Typography variant="h2" sx={{ mb: 1 }}>
+        <Typography variant="h2" sx={{ mb: 0.5, fontWeight: 700 }}>
           Ranking
         </Typography>
         <Typography variant="body2" sx={{ opacity: 0.8 }}>
@@ -180,166 +156,128 @@ const Ranking = () => {
         </Typography>
       </Box>
 
-      {/* Card do Usuário */}
-      <Box sx={{ px: 2.5, mt: -3, mb: 3 }}>
-        <Card sx={{ border: '2px solid #000' }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Avatar src={userData.foto} sx={{ width: 60, height: 60 }} />
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h3" sx={{ fontSize: 18 }}>
-                  {userData.nome}
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
-                  <Chip
-                    label={`Nível ${userData.nivel}`}
-                    size="small"
-                    sx={{ fontWeight: 600 }}
-                  />
-                  <Chip
-                    label={`#${userData.posicao}`}
-                    size="small"
-                    icon={<TrophyIcon />}
-                    sx={{ fontWeight: 600, backgroundColor: '#f59e0b20', color: '#f59e0b' }}
-                  />
-                </Box>
-              </Box>
-              <Typography variant="h2" sx={{ fontSize: 28, fontWeight: 700 }}>
-                {userData.pontuacao}
-              </Typography>
-            </Box>
-
-            {/* Progresso para próximo nível */}
-            <Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                <Typography variant="caption" color="text.secondary">
-                  Progresso para Nível {userData.nivel + 1}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {userData.pontuacao % 25}/{25} pts
-                </Typography>
-              </Box>
-              <LinearProgress
-                variant="determinate"
-                value={progressoNivel}
-                sx={{
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: '#e0e0e0',
-                  '& .MuiLinearProgress-bar': {
-                    backgroundColor: '#10b981',
-                  },
-                }}
-              />
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-
-      {/* Conquistas */}
-      <Box sx={{ px: 2.5, mb: 3 }}>
-        <Typography variant="h3" sx={{ mb: 2 }}>
-          🏆 Conquistas
-        </Typography>
-
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {conquistas.map((conquista) => (
-            <Card
-              key={conquista.id}
-              sx={{
-                opacity: conquista.desbloqueada ? 1 : 0.5,
-                border: conquista.desbloqueada ? '2px solid #10b981' : 'none',
-              }}
-            >
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Box
-                    sx={{
-                      fontSize: 40,
-                      width: 60,
-                      height: 60,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: conquista.desbloqueada ? '#10b98120' : '#f5f5f5',
-                      borderRadius: 2,
-                    }}
-                  >
-                    {conquista.icone}
-                  </Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="h3" sx={{ fontSize: 16, mb: 0.5 }}>
-                      {conquista.nome}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {conquista.descricao}
-                    </Typography>
-                    {!conquista.desbloqueada && (
-                      <Typography variant="caption" color="primary">
-                        Faltam {conquista.pontosNecessarios - userData.pontuacao} pontos
-                      </Typography>
-                    )}
-                  </Box>
-                  {conquista.desbloqueada && (
+      {/* Conteúdo centralizado e mais largo */}
+      <Box sx={{ px: 3, maxWidth: 600, mx: 'auto', width: '100%' }}>
+        {/* Card do Usuário */}
+        <Box sx={{ mt: 3, mb: 3 }}>
+          <Card sx={{ border: '2px solid #000' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                <Avatar src={userData.foto} sx={{ width: 60, height: 60 }} />
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h3" sx={{ fontSize: 18 }}>
+                    {userData.nome}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
                     <Chip
-                      label="✓"
+                      label={`Nível ${userData.nivel}`}
                       size="small"
-                      sx={{
-                        backgroundColor: '#10b981',
-                        color: '#fff',
-                        fontWeight: 700,
-                      }}
+                      sx={{ fontWeight: 600 }}
                     />
-                  )}
+                    <Chip
+                      label={`#${userData.posicao}`}
+                      size="small"
+                      icon={<TrophyIcon />}
+                      sx={{ fontWeight: 600, backgroundColor: '#f59e0b20', color: '#f59e0b' }}
+                    />
+                  </Box>
                 </Box>
-              </CardContent>
-            </Card>
-          ))}
+                <Typography variant="h2" sx={{ fontSize: 28, fontWeight: 700 }}>
+                  {userData.pontuacao}
+                </Typography>
+              </Box>
+
+              {/* Progresso para próximo nível */}
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    Progresso para Nível {userData.nivel + 1}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {userData.pontuacao % 25}/{25} pts
+                  </Typography>
+                </Box>
+                <LinearProgress
+                  variant="determinate"
+                  value={progressoNivel}
+                  sx={{
+                    height: 8,
+                    borderRadius: 4,
+                    backgroundColor: '#e0e0e0',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#10b981',
+                    },
+                  }}
+                />
+              </Box>
+            </CardContent>
+          </Card>
         </Box>
-      </Box>
 
-      {/* Top 5 Ranking */}
-      <Box sx={{ px: 2.5, mb: 3 }}>
-        <Typography variant="h3" sx={{ mb: 2 }}>
-          🥇 Top 5 Cidadãos
-        </Typography>
+        {/* Conquistas */}
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h3" sx={{ mb: 2 }}>
+            🏆 Conquistas
+          </Typography>
 
-        <Card>
-          <List sx={{ p: 0 }}>
-            {ranking.map((usuario, index) => (
-              <ListItem
-                key={usuario.posicao}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {conquistas.map((conquista) => (
+              <Card
+                key={conquista.id}
                 sx={{
-                  borderBottom: index < ranking.length - 1 ? '1px solid #e0e0e0' : 'none',
-                  py: 2,
+                  border: '2px solid #000',
+                  opacity: conquista.desbloqueada ? 1 : 0.5,
+                  backgroundColor: conquista.desbloqueada ? '#10b98110' : '#fff',
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
-                  <Typography
-                    variant="h3"
-                    sx={{
-                      fontSize: 24,
-                      fontWeight: 700,
-                      width: 30,
-                      color: usuario.posicao <= 3 ? '#f59e0b' : '#666',
-                    }}
-                  >
-                    {usuario.posicao}
-                  </Typography>
-                  <Avatar src={usuario.foto} sx={{ width: 40, height: 40 }} />
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                      {usuario.nome}
-                    </Typography>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box
+                      sx={{
+                        fontSize: 40,
+                        width: 60,
+                        height: 60,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: conquista.desbloqueada ? '#10b98120' : '#f5f5f5',
+                        borderRadius: 2,
+                        border: '2px solid #000',
+                      }}
+                    >
+                      {conquista.icone}
+                    </Box>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h3" sx={{ fontSize: 16, mb: 0.5 }}>
+                        {conquista.nome}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {conquista.descricao}
+                      </Typography>
+                      {!conquista.desbloqueada && (
+                        <Typography variant="caption" color="primary" sx={{ fontWeight: 600 }}>
+                          Faltam {conquista.pontosNecessarios - userData.pontuacao} pontos
+                        </Typography>
+                      )}
+                    </Box>
+                    {conquista.desbloqueada && (
+                      <Chip
+                        label="✓"
+                        size="small"
+                        sx={{
+                          backgroundColor: '#10b981',
+                          color: '#fff',
+                          fontWeight: 700,
+                          border: '2px solid #000',
+                        }}
+                      />
+                    )}
                   </Box>
-                  <Typography variant="h3" sx={{ fontSize: 18, fontWeight: 700 }}>
-                    {usuario.pontuacao}
-                  </Typography>
-                </Box>
-              </ListItem>
+                </CardContent>
+              </Card>
             ))}
-          </List>
-        </Card>
+          </Box>
+        </Box>
       </Box>
 
       <BottomNav />

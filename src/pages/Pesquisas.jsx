@@ -12,6 +12,7 @@ import BottomNav from '../components/BottomNav';
 import usuarioService from '../services/usuarioService';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import LoadingScreen from '../components/LoadingScreen';
 
 const Pesquisas = () => {
   const [pesquisas, setPesquisas] = useState([]);
@@ -88,13 +89,9 @@ const Pesquisas = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Typography>Carregando...</Typography>
-      </Box>
-    );
-  }
+  if (loading || !userData) {
+  return <LoadingScreen />;
+}
 
   return (
     <Box sx={{ pb: 10, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
