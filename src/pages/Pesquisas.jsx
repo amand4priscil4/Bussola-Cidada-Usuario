@@ -89,9 +89,9 @@ const Pesquisas = () => {
     }
   };
 
-  if (loading || !userData) {
-  return <LoadingScreen />;
-}
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Box sx={{ pb: 10, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
@@ -125,7 +125,7 @@ const Pesquisas = () => {
           <List sx={{ p: 0 }}>
             {pesquisas.map((pesquisa, index) => (
               <Box key={pesquisa.id + index}>
-                <Card sx={{ mb: 2 }}>
+                <Card sx={{ mb: 2, border: '2px solid #000' }}>
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
                       <Typography variant="body2" color="text.secondary" sx={{ fontSize: 12 }}>
