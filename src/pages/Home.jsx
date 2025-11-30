@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Avatar,
@@ -7,15 +7,9 @@ import {
   Card,
   CardContent,
   Button,
-  List,
-  ListItem,
-  Rating,
-  IconButton,
-  Divider,
 } from '@mui/material';
 import {
   LocationOn as LocationIcon,
-  MoreVert as MoreIcon,
 } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
@@ -29,38 +23,15 @@ const Home = () => {
   const [ultimaPesquisa, setUltimaPesquisa] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hash do usuário (virá do VEM via URL ou localStorage)
-  const userHash = new URLSearchParams(window.location.search).get('hash') || 
-                   localStorage.getItem('userHash') || 
+  // Hash do cartão RFID (vem do QR Code escaneado)
+  // Fluxo: Usuário aproxima cartão → vota no totem → totem gera QR Code com hash
+  // → usuário escaneia QR Code → hash é passado via URL ou localStorage
+  const userHash = new URLSearchParams(window.location.search).get('hash') ||
+                   localStorage.getItem('userHash') ||
                    '40ebb86c';
 
-  // Serviços mocados (será da API depois)
-  const servicosMocados = [
-    {
-      id: 1,
-      nome: 'Detran',
-      descricao: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus mauris nulla, eu...',
-      avaliacao: 4.5,
-      totalAvaliacoes: 89,
-    },
-    {
-      id: 2,
-      nome: 'UPA',
-      descricao: 'Unidade de Pronto Atendimento 24h',
-      avaliacao: 4.2,
-      totalAvaliacoes: 156,
-    },
-    {
-      id: 3,
-      nome: 'CRAS',
-      descricao: 'Centro de Referência de Assistência Social',
-      avaliacao: 4.7,
-      totalAvaliacoes: 43,
-    },
-  ];
-
   useEffect(() => {
-    // Salvar hash no localStorage
+    // Salvar hash no localStorage para manter sessão
     if (userHash) {
       localStorage.setItem('userHash', userHash);
     }
@@ -70,9 +41,18 @@ const Home = () => {
   const loadUserData = async () => {
     setLoading(true);
     try {
-      // Buscar dados do usuário
-      const userResponse = await usuarioService.getByHash(userHash);
-      const user = userResponse.data;
+      // Verificar/buscar dados do usuário pelo hash do QR Code
+      const user = await usuarioService.verificarUsuario(userHash);
+
+      // Verificar se há campos obrigatórios nulos (nome, email, data_nascimento)
+      // Se houver algum campo null, significa que o cadastro está incompleto
+      const temCamposNulos = !user.nome || !user.email || !user.cadastro_completo;
+
+      if (temCamposNulos) {
+        // Redirecionar para tela de cadastro para completar os dados
+        navigate('/cadastro');
+        return;
+      }
 
       // Buscar interações do usuário
       const interacoesResponse = await usuarioService.getInteracoes(userHash);
@@ -81,7 +61,7 @@ const Home = () => {
       // Processar última pesquisa
       if (interacoes.length > 0) {
         const ultima = interacoes[0];
-        
+
         // Buscar pergunta
         const perguntasResponse = await usuarioService.getPerguntas();
         const perguntas = perguntasResponse.data || [];
@@ -103,11 +83,12 @@ const Home = () => {
 
       setUserData({
         vem_hash: user.vem_hash,
-        nome: 'Ana Silva', // Mock - depois vem da API
+        nome: user.nome || 'Usuário',
         nivel: Math.floor((user.pontuacao || 0) / 25) + 1,
         pontuacao: user.pontuacao || 0,
+        idade: user.idade,
         foto: 'https://i.pravatar.cc/150?img=47',
-        localizacao: 'Parada Cond. da Boa Vista', // Mock
+        localizacao: 'Parada Cond. da Boa Vista', // Mock - pode vir do totem depois
       });
 
     } catch (error) {
@@ -277,7 +258,7 @@ const Home = () => {
         <Button
           fullWidth
           variant="contained"
-          onClick={() => navigate('/pesquisas')}
+          onClick={() => navigate('/participar-pesquisas')}
           sx={{
             py: 1.5,
             backgroundColor: '#000',
@@ -298,57 +279,25 @@ const Home = () => {
               Procura algum serviço próximo?
             </Typography>
 
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Encontre serviços públicos próximos ao seu ponto de ônibus
+            </Typography>
+
             <Button
               fullWidth
-              variant="outlined"
+              variant="contained"
+              onClick={() => navigate('/servicos')}
               sx={{
-                mb: 2,
-                justifyContent: 'space-between',
-                textTransform: 'none',
-                color: '#000',
-                borderColor: '#e0e0e0',
+                py: 1.5,
+                backgroundColor: '#000',
+                fontWeight: 600,
+                '&:hover': {
+                  backgroundColor: '#333',
+                },
               }}
-              endIcon={<span>▼</span>}
             >
-              Selecione um serviço
+              Ver todos os serviços próximos
             </Button>
-
-            <List sx={{ p: 0 }}>
-              {servicosMocados.map((servico, index) => (
-                <Box key={servico.id}>
-                  <ListItem
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      gap: 1,
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                      <Typography variant="h3" sx={{ fontSize: 16 }}>
-                        {servico.nome}
-                      </Typography>
-                      <IconButton size="small">
-                        <MoreIcon />
-                      </IconButton>
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary">
-                      {servico.descricao}
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Rating value={servico.avaliacao} precision={0.5} readOnly size="small" />
-                      <Typography variant="caption" color="text.secondary">
-                        ({servico.totalAvaliacoes} avaliações)
-                      </Typography>
-                    </Box>
-                  </ListItem>
-                  {index < servicosMocados.length - 1 && <Divider />}
-                </Box>
-              ))}
-            </List>
           </CardContent>
         </Card>
       </Box>

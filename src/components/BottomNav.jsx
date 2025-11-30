@@ -1,10 +1,10 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, IconButton } from '@mui/material';
 import {
   EmojiEvents as TrophyIcon,
   Home as HomeIcon,
   ExitToApp as LogoutIcon,
+  Place as PlaceIcon,
 } from '@mui/icons-material';
 
 const BottomNav = () => {
@@ -26,21 +26,28 @@ const BottomNav = () => {
         zIndex: 1000,
       }}
     >
-      <IconButton 
+      <IconButton
         onClick={() => navigate('/ranking')}
         sx={{ color: location.pathname === '/ranking' ? '#000' : '#999' }}
       >
         <TrophyIcon sx={{ fontSize: 32 }} />
       </IconButton>
-      
-      <IconButton 
+
+      <IconButton
         onClick={() => navigate('/')}
         sx={{ color: location.pathname === '/' ? '#000' : '#999' }}
       >
         <HomeIcon sx={{ fontSize: 32 }} />
       </IconButton>
-      
-      <IconButton 
+
+      <IconButton
+        onClick={() => navigate('/servicos')}
+        sx={{ color: location.pathname === '/servicos' ? '#000' : '#999' }}
+      >
+        <PlaceIcon sx={{ fontSize: 32 }} />
+      </IconButton>
+
+      <IconButton
         onClick={() => {
           // Limpar dados e fazer logout
           localStorage.removeItem('userHash');

@@ -30,16 +30,20 @@ const Ranking = () => {
     setLoading(true);
     try {
       // Buscar dados do usuário
-      const userResponse = await usuarioService.getByHash(userHash);
-      const user = userResponse.data;
+      const user = await usuarioService.verificarUsuario(userHash);
+
+      // Buscar ranking para encontrar a posição do usuário
+      const ranking = await usuarioService.getRanking(100, 'desc');
+      const posicaoUsuario = ranking.findIndex(u => u.vem_hash === userHash) + 1;
 
       setUserData({
         vem_hash: user.vem_hash,
-        nome: 'Ana Silva',
+        nome: user.nome || 'Usuário',
         pontuacao: user.pontuacao || 0,
         nivel: Math.floor((user.pontuacao || 0) / 25) + 1,
+        idade: user.idade,
         foto: 'https://i.pravatar.cc/150?img=47',
-        posicao: 12,
+        posicao: posicaoUsuario || '-',
       });
 
       // Mock de conquistas baseado na pontuação
