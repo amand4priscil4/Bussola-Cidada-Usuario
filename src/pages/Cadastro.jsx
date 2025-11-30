@@ -116,14 +116,30 @@ const Cadastro = () => {
         width: '100vw',
         backgroundColor: '#f5f5f5',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: { xs: 2, sm: 3 },
+        justifyContent: 'flex-start',
+        paddingTop: { xs: 2.5, sm: 3 },
+        paddingX: { xs: 2, sm: 3 },
+        paddingBottom: { xs: 2, sm: 3 },
         position: 'relative',
         left: 0,
         right: 0,
+        gap: 0,
       }}
     >
+      {/* Logo acima do card */}
+      <Box
+        component="img"
+        src="/logo_nome.png"
+        alt="Bússola Cidadã"
+        sx={{
+          width: { xs: 200, sm: 250 },
+          height: 'auto',
+          mx: 'auto',
+        }}
+      />
+
       <Card
         sx={{
           maxWidth: { xs: 'calc(100vw - 32px)', sm: 450, md: 500 },
@@ -131,6 +147,7 @@ const Cadastro = () => {
           border: '2px solid #000',
           borderRadius: '12px',
           boxShadow: { xs: '4px 4px 0px #000', sm: '6px 6px 0px #000' },
+          marginTop: { xs: '-8px', sm: '-12px' },
         }}
       >
         <Box
