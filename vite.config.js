@@ -8,27 +8,27 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.png', 'logo_nome.png', 'banner-onibus.jpg'],
+      includeAssets: ['logo_icone.png', 'logo_nome.png', 'banner-onibus.jpg'],
       manifest: {
         name: 'Bússola Cidadã',
         short_name: 'Bússola Cidadã',
         description: 'Participe de pesquisas e descubra serviços públicos próximos',
         theme_color: '#FFD93D',
-        background_color: '#f5f5f5',
+        background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '/logo.png',
+            src: '/logo_icone.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'maskable'
           },
           {
-            src: '/logo.png',
+            src: '/logo_nome.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'any'
           }
         ]
       }
