@@ -93,6 +93,9 @@ const ParticiparPesquisas = () => {
         resposta: resposta, // 'sim' ou 'nao'
       });
 
+      // Adicionar pontos ao usuário (10 pontos por resposta)
+      await usuarioService.registrarVoto(userHash, 10);
+
       // Adicionar ao Set de respondidas
       setPesquisasRespondidas(prev => new Set([...prev, perguntaId]));
 

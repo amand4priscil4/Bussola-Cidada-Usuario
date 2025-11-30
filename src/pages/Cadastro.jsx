@@ -113,24 +113,24 @@ const Cadastro = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        height: '100%',
+        width: '100vw',
         backgroundColor: '#f5f5f5',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: { xs: 2, sm: 3 },
-        boxSizing: 'border-box',
+        position: 'relative',
+        left: 0,
+        right: 0,
       }}
     >
       <Card
         sx={{
-          maxWidth: { xs: '100%', sm: 450, md: 500 },
+          maxWidth: { xs: 'calc(100vw - 32px)', sm: 450, md: 500 },
           width: '100%',
           border: '2px solid #000',
           borderRadius: '12px',
           boxShadow: { xs: '4px 4px 0px #000', sm: '6px 6px 0px #000' },
-          margin: 'auto',
         }}
       >
         <Box
