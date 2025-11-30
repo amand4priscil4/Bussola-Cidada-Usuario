@@ -8,6 +8,7 @@ import Pesquisas from './pages/Pesquisas';
 import ParticiparPesquisas from './pages/ParticiparPesquisas';
 import Ranking from './pages/Ranking';
 import Servicos from './pages/Servicos';
+import TestQRCodes from './pages/TestQRCodes';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/participar-pesquisas" element={<ParticiparPesquisas />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/servicos" element={<Servicos />} />
+          <Route path="/test-qr" element={<TestQRCodes />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
