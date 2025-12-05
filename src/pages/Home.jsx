@@ -22,11 +22,16 @@ const Home = () => {
   const [ultimaPesquisa, setUltimaPesquisa] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hash do cartão RFID (vem da URL)
+  // Hash do cartão RFID (vem da URL ou localStorage)
   const urlParams = new URLSearchParams(window.location.search);
-  const userHash = urlParams.get('hash');
+  const userHash = urlParams.get('hash') || localStorage.getItem('userHash') || '';
 
   useEffect(() => {
+    // Salvar hash no localStorage se vier da URL
+    if (urlParams.get('hash')) {
+      localStorage.setItem('userHash', urlParams.get('hash'));
+    }
+
     // Se não há hash, redirecionar para página inicial
     if (!userHash) {
       navigate('/');
@@ -34,7 +39,7 @@ const Home = () => {
     }
 
     loadUserData();
-  }, [userHash]);
+  }, [userHash, navigate]);
 
   const loadUserData = async () => {
     if (!userHash) return;
