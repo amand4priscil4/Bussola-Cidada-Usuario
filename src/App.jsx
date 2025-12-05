@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Home from './pages/Home';
 import QRHandler from './pages/QRHandler';
-import Instrucoes from './pages/Instrucoes';
 import Cadastro from './pages/Cadastro';
 import Pesquisas from './pages/Pesquisas';
 import ParticiparPesquisas from './pages/ParticiparPesquisas';
@@ -19,7 +18,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<QRHandler />} />
-          <Route path="/instrucoes" element={<Instrucoes />} />
           <Route path="/home" element={<Home />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/pesquisas" element={<Pesquisas />} />
