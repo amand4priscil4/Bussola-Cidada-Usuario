@@ -109,10 +109,163 @@ const Servicos = () => {
       console.error('Erro ao carregar serviços:', err);
       setError('Não foi possível carregar os serviços. Tente novamente mais tarde.');
 
-      // Dados de fallback para desenvolvimento
-      setServicos([]);
-      setServicosFiltrados([]);
-      setTipos(['Saúde', 'Transporte', 'Educação', 'Segurança', 'Assistência Social']);
+      // Dados mockados dos serviços públicos próximos ao Senac
+      const servicosMock = [
+        {
+          servico_id: 'deam_1',
+          nome: 'Delegacia Especializada de Atendimento à Mulher (1ª DEAM)',
+          tipo: 'Segurança',
+          endereco: 'Rua do Pombal, Praça do Campo Santo, s/n - Santo Amaro',
+          telefone: '(81) 3184-3356 / 3184-3359',
+          descricao: 'Atendimento especializado à mulher',
+          horario: 'Segunda a sexta 8h-18h',
+          latitude: -8.0478,
+          longitude: -34.8780,
+          distancia_km: 0.3,
+          ativo: true
+        },
+        {
+          servico_id: 'deleg_cyber',
+          nome: 'Delegacia de Repressão aos Crimes Cibernéticos',
+          tipo: 'Segurança',
+          endereco: 'Rua Gervásio Pires, 863 - Santo Amaro',
+          telefone: 'Não informado',
+          descricao: 'Crimes virtuais',
+          horario: 'Segunda a sexta 8h-18h; Sábado e domingo 8h-16h',
+          latitude: -8.0480,
+          longitude: -34.8775,
+          distancia_km: 0.4,
+          ativo: true
+        },
+        {
+          servico_id: 'deleg_estel',
+          nome: 'Delegacia de Repressão ao Estelionato',
+          tipo: 'Segurança',
+          endereco: 'Av. Visconde de Suassuna - Santo Amaro',
+          telefone: 'Não informado',
+          descricao: 'Crimes patrimoniais',
+          horario: 'Segunda a sexta 8h-18h',
+          latitude: -8.0475,
+          longitude: -34.8772,
+          distancia_km: 0.2,
+          ativo: true
+        },
+        {
+          servico_id: 'policlinica',
+          nome: 'Policlínica Waldemar de Oliveira',
+          tipo: 'Saúde',
+          endereco: 'R. do Pombal, 115 - Santo Amaro, Recife - PE, 50100-170',
+          telefone: 'Não informado',
+          descricao: 'Atendimento de saúde',
+          horario: 'Segunda a sexta 8h-16h',
+          latitude: -8.0479,
+          longitude: -34.8781,
+          distancia_km: 0.35,
+          ativo: true
+        },
+        {
+          servico_id: 'inss',
+          nome: 'Gerência Executiva do INSS em Recife',
+          tipo: 'Assistência Social',
+          endereco: 'Av. Mário Melo, 343 - Santo Amaro, Recife - PE, 50040-010',
+          telefone: 'Não informado',
+          descricao: 'Serviços previdenciários',
+          horario: 'Segunda a sexta 7h-17h',
+          latitude: -8.0482,
+          longitude: -34.8790,
+          distancia_km: 0.5,
+          ativo: true
+        },
+        {
+          servico_id: 'crp',
+          nome: 'Conselho Regional de Psicologia de Pernambuco - 2ª Região',
+          tipo: 'Assistência Social',
+          endereco: 'R. Treze de Maio, 47 - Santo Amaro, Recife - PE, 50100-160',
+          telefone: 'Não informado',
+          descricao: 'Atendimento psicológico',
+          horario: 'Segunda a sexta 8h-16h',
+          latitude: -8.0477,
+          longitude: -34.8773,
+          distancia_km: 0.25,
+          ativo: true
+        },
+        {
+          servico_id: 'ideres',
+          nome: 'IDERES - Instituto de Desenvolvimento e Reintegração Social',
+          tipo: 'Assistência Social',
+          endereco: 'Av. Visc. de Suassuna, 330 - sala 2 - Santo Amaro, Recife - PE, 50050-540',
+          telefone: 'Não informado',
+          descricao: 'Reintegração social',
+          horario: 'Segunda a sexta 9h-18h',
+          latitude: -8.0474,
+          longitude: -34.8771,
+          distancia_km: 0.18,
+          ativo: true
+        },
+        {
+          servico_id: 'centro_pop',
+          nome: 'Centro POP Glória',
+          tipo: 'Assistência Social',
+          endereco: 'R. do Sossego, 565 - Santo Amaro, Recife - PE, 52120-092',
+          telefone: 'Não informado',
+          descricao: 'Atendimento à população em situação de rua',
+          horario: 'Segunda a sexta 8h-17h',
+          latitude: -8.0490,
+          longitude: -34.8795,
+          distancia_km: 0.7,
+          ativo: true
+        },
+        {
+          servico_id: 'mppe',
+          nome: 'Ministério Público de Pernambuco',
+          tipo: 'Assistência Social',
+          endereco: 'Av. Visc. de Suassuna, 99 - Santo Amaro, Recife - PE, 50050-540',
+          telefone: 'Não informado',
+          descricao: 'Serviços do Ministério Público',
+          horario: 'Segunda a sexta 8h-17h',
+          latitude: -8.0473,
+          longitude: -34.8770,
+          distancia_km: 0.15,
+          ativo: true
+        },
+        {
+          servico_id: 'mppe_promo',
+          nome: 'MPPE - Promotorias Da Capital',
+          tipo: 'Assistência Social',
+          endereco: '99, Av. Visc. de Suassuna, 1 - Santo Amaro, Recife - PE, 50050-540',
+          telefone: 'Não informado',
+          descricao: 'Promotorias de justiça',
+          horario: 'Segunda a sexta 8h-18h',
+          latitude: -8.0473,
+          longitude: -34.8770,
+          distancia_km: 0.15,
+          ativo: true
+        },
+        {
+          servico_id: 'sms_ggti',
+          nome: 'SMS Recife - GGTI',
+          tipo: 'Saúde',
+          endereco: 'R. dos Palmares, 441 - Santo Amaro, Recife - PE, 50100-060',
+          telefone: 'Não informado',
+          descricao: 'Gestão em saúde',
+          horario: 'Segunda a sexta 8h-17h',
+          latitude: -8.0481,
+          longitude: -34.8785,
+          distancia_km: 0.45,
+          ativo: true
+        }
+      ];
+
+      setServicos(servicosMock);
+      setServicosFiltrados(servicosMock);
+      setTipos(['Todos', 'Saúde', 'Segurança', 'Assistência Social']);
+
+      // Estatísticas mockadas
+      setEstatisticas({
+        total_servicos: servicosMock.length,
+        servicos_ativos: servicosMock.length,
+        tipos_disponiveis: 3
+      });
     } finally {
       setLoading(false);
     }
