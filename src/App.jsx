@@ -25,6 +25,8 @@ function App() {
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/test-qr" element={<TestQRCodes />} />
+          {/* Rota catch-all para redirecionar qualquer rota não encontrada para QRHandler */}
+          <Route path="*" element={<QRHandler />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

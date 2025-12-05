@@ -14,13 +14,25 @@ const QRHandler = () => {
   useEffect(() => {
     // Pegar hash da URL (vem do QR code escaneado)
     const urlParams = new URLSearchParams(window.location.search);
-    const hashFromQR = urlParams.get('hash');
+    let hashFromQR = urlParams.get('hash');
+
+    // Se não encontrou na query string, verificar se o pathname é um hash válido
+    // (ex: /8bf6fd03 em vez de /?hash=8bf6fd03)
+    if (!hashFromQR && window.location.pathname !== '/') {
+      const pathname = window.location.pathname.slice(1); // Remove a barra inicial
+      // Verificar se o pathname parece ser um hash (8 caracteres alfanuméricos)
+      if (/^[a-f0-9]{8}$/i.test(pathname)) {
+        hashFromQR = pathname;
+        console.log('QRHandler - Hash encontrado no pathname:', hashFromQR);
+      }
+    }
 
     console.log('QRHandler - Hash da URL:', hashFromQR);
     console.log('QRHandler - URL completa:', window.location.href);
+    console.log('QRHandler - Pathname:', window.location.pathname);
 
     if (hashFromQR) {
-      // Redirecionar para Home passando o hash na URL
+      // Redirecionar para Home passando o hash na URL como query parameter
       navigate(`/home?hash=${hashFromQR}`, { replace: true });
     } else {
       // Sem hash na URL, mostrar instruções
