@@ -34,7 +34,7 @@ const QRHandler = () => {
       } else {
         // Sem hash, mostrar instruções
         console.log('QRHandler - Sem hash, indo para instruções');
-        navigate('/instrucoes', { replace: true });
+        navigate('/Home', { replace: true });
       }
     }
   }, [navigate]);
