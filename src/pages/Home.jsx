@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   Box,
-  Avatar,
   Typography,
   Chip,
   Card,
@@ -23,21 +22,16 @@ const Home = () => {
   const [ultimaPesquisa, setUltimaPesquisa] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hash do cartão RFID (vem do QR Code escaneado)
-  // Fluxo: Usuário aproxima cartão → vota no totem → totem gera QR Code com hash
-  // → usuário escaneia QR Code → hash é passado via URL ou localStorage
-  const userHash = new URLSearchParams(window.location.search).get('hash') ||
-                   localStorage.getItem('userHash');
+  // Hash do cartão RFID (vem do localStorage, salvo pelo QRHandler)
+  const userHash = localStorage.getItem('userHash');
 
   useEffect(() => {
-    // Se não há hash, redirecionar para login
+    // Se não há hash, redirecionar para página inicial
     if (!userHash) {
       navigate('/');
       return;
     }
 
-    // Salvar hash no localStorage para manter sessão
-    localStorage.setItem('userHash', userHash);
     loadUserData();
   }, []);
 
@@ -87,7 +81,6 @@ const Home = () => {
         nivel: Math.floor((user.pontuacao || 0) / 25) + 1,
         pontuacao: user.pontuacao || 0,
         idade: user.idade,
-        foto: 'https://i.pravatar.cc/150?img=47',
         localizacao: 'Parada Cond. da Boa Vista', // Mock - pode vir do totem depois
       });
 
@@ -99,7 +92,6 @@ const Home = () => {
         nome: 'Ana Silva',
         nivel: 4,
         pontuacao: 100,
-        foto: 'https://i.pravatar.cc/150?img=47',
         localizacao: 'Parada Cond. da Boa Vista',
       });
 
@@ -130,25 +122,11 @@ const Home = () => {
        backgroundSize: 'cover',
        backgroundPosition: 'center',
        borderBottom: '2px solid #000',
-       position: 'relative',
      }}
-   >
-        {/* Avatar */}
-        <Avatar
-          src={userData.foto}
-          sx={{
-            width: 80,
-            height: 80,
-            border: '4px solid #fff',
-            position: 'absolute',
-            bottom: -40,
-            left: 20,
-          }}
-        />
-      </Box>
+   />
 
       {/* Perfil */}
-      <Box sx={{ px: 2.5, pt: 6 }}>
+      <Box sx={{ px: 2.5, pt: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
           <Typography variant="h2">
             {userData.nome}!
