@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -28,6 +28,13 @@ const Cadastro = () => {
   });
 
   const userHash = localStorage.getItem('userHash') || '';
+
+  useEffect(() => {
+    // Se não há hash, redirecionar para login
+    if (!userHash) {
+      navigate('/login');
+    }
+  }, [userHash, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -93,8 +100,9 @@ const Cadastro = () => {
       // Salvar dados do usuário no localStorage
       localStorage.setItem('userData', JSON.stringify(resultado));
 
-      // Redirecionar para a Home
-      navigate('/', { replace: true });
+      // Recarregar a página para atualizar o estado
+      // e redirecionar para a Home
+      window.location.href = '/';
 
     } catch (error) {
       console.error('Erro ao completar cadastro:', error);

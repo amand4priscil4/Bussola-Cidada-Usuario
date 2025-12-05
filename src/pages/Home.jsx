@@ -27,14 +27,17 @@ const Home = () => {
   // Fluxo: Usuário aproxima cartão → vota no totem → totem gera QR Code com hash
   // → usuário escaneia QR Code → hash é passado via URL ou localStorage
   const userHash = new URLSearchParams(window.location.search).get('hash') ||
-                   localStorage.getItem('userHash') ||
-                   '40ebb86c';
+                   localStorage.getItem('userHash');
 
   useEffect(() => {
-    // Salvar hash no localStorage para manter sessão
-    if (userHash) {
-      localStorage.setItem('userHash', userHash);
+    // Se não há hash, redirecionar para login
+    if (!userHash) {
+      navigate('/login');
+      return;
     }
+
+    // Salvar hash no localStorage para manter sessão
+    localStorage.setItem('userHash', userHash);
     loadUserData();
   }, []);
 

@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 import Home from './pages/Home';
+import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import Pesquisas from './pages/Pesquisas';
 import ParticiparPesquisas from './pages/ParticiparPesquisas';
@@ -17,6 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/pesquisas" element={<Pesquisas />} />
           <Route path="/participar-pesquisas" element={<ParticiparPesquisas />} />
