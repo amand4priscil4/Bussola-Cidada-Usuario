@@ -47,6 +47,13 @@ const Home = () => {
       // Verificar/criar usuário automaticamente pelo hash do QR Code
       const user = await usuarioService.verificarUsuario(userHash);
 
+      // Verificar se o cadastro está completo
+      if (!user.cadastro_completo) {
+        // Redirecionar para tela de cadastro
+        navigate('/cadastro');
+        return;
+      }
+
       // Buscar interações do usuário
       const interacoesResponse = await usuarioService.getInteracoes(userHash);
       const interacoes = interacoesResponse.data || [];
