@@ -86,12 +86,14 @@ const Home = () => {
 
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
+      console.log('Usando dados mockados devido ao erro da API');
+
       // Usar dados mocados em caso de erro
       setUserData({
         vem_hash: userHash,
-        nome: 'Ana Silva',
-        nivel: 4,
-        pontuacao: 100,
+        nome: 'Usuário Teste',
+        nivel: 1,
+        pontuacao: 0,
         localizacao: 'Parada Cond. da Boa Vista',
       });
 
