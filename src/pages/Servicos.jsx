@@ -107,7 +107,7 @@ const Servicos = () => {
 
     } catch (err) {
       console.error('Erro ao carregar serviços:', err);
-      setError('Não foi possível carregar os serviços. Tente novamente mais tarde.');
+      // setError('Não foi possível carregar os serviços. Tente novamente mais tarde.');
 
       // Dados mockados dos serviços públicos próximos ao Senac
       const servicosMock = [
