@@ -18,7 +18,9 @@ const Pesquisas = () => {
   const [pesquisas, setPesquisas] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userHash = localStorage.getItem('userHash') || '40ebb86c';
+  // Hash do cartão RFID (vem da URL)
+  const urlParams = new URLSearchParams(window.location.search);
+  const userHash = urlParams.get('hash') || '';
 
   useEffect(() => {
     loadPesquisas();

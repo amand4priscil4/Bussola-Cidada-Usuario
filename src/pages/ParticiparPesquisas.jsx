@@ -26,11 +26,16 @@ const ParticiparPesquisas = () => {
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(null);
 
-  const userHash = localStorage.getItem('userHash') || '40ebb86c';
+  // Hash do cartão RFID (vem da URL)
+  const urlParams = new URLSearchParams(window.location.search);
+  const userHash = urlParams.get('hash') || '';
 
   useEffect(() => {
+    if (!userHash) {
+      return;
+    }
     carregarPesquisas();
-  }, []);
+  }, [userHash]);
 
   const carregarPesquisas = async () => {
     setLoading(true);

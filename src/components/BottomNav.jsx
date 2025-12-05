@@ -49,9 +49,7 @@ const BottomNav = () => {
 
       <IconButton
         onClick={() => {
-          // Limpar dados e fazer logout
-          localStorage.removeItem('userHash');
-          localStorage.removeItem('userData');
+          // Fazer logout - redirecionar para página inicial
           navigate('/');
         }}
         sx={{ color: '#999' }}

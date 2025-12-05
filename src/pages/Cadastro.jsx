@@ -27,10 +27,12 @@ const Cadastro = () => {
     data_nascimento: '',
   });
 
-  const userHash = localStorage.getItem('userHash') || '';
+  // Hash do cartão RFID (vem da URL)
+  const urlParams = new URLSearchParams(window.location.search);
+  const userHash = urlParams.get('hash') || '';
 
   useEffect(() => {
-    // Se não há hash, redirecionar para login
+    // Se não há hash, redirecionar para página inicial
     if (!userHash) {
       navigate('/');
     }
@@ -97,11 +99,8 @@ const Cadastro = () => {
         data_nascimento: formData.data_nascimento,
       });
 
-      // Salvar dados do usuário no localStorage
-      localStorage.setItem('userData', JSON.stringify(resultado));
-
-      // Redirecionar para a Home
-      navigate('/home');
+      // Redirecionar para a Home passando o hash
+      navigate(`/home?hash=${userHash}`);
 
     } catch (error) {
       console.error('Erro ao completar cadastro:', error);

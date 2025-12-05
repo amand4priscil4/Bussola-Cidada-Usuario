@@ -22,8 +22,9 @@ const Home = () => {
   const [ultimaPesquisa, setUltimaPesquisa] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hash do cartão RFID (vem do localStorage, salvo pelo QRHandler)
-  const userHash = localStorage.getItem('userHash');
+  // Hash do cartão RFID (vem da URL)
+  const urlParams = new URLSearchParams(window.location.search);
+  const userHash = urlParams.get('hash');
 
   useEffect(() => {
     // Se não há hash, redirecionar para página inicial
@@ -33,9 +34,11 @@ const Home = () => {
     }
 
     loadUserData();
-  }, []);
+  }, [userHash]);
 
   const loadUserData = async () => {
+    if (!userHash) return;
+    
     setLoading(true);
     try {
       // Verificar/criar usuário automaticamente pelo hash do QR Code
@@ -43,8 +46,8 @@ const Home = () => {
 
       // Verificar se o cadastro está completo
       if (!user.cadastro_completo) {
-        // Redirecionar para tela de cadastro
-        navigate('/cadastro');
+        // Redirecionar para tela de cadastro passando o hash
+        navigate(`/cadastro?hash=${userHash}`);
         return;
       }
 
@@ -166,7 +169,7 @@ const Home = () => {
         <Button
           fullWidth
           variant="outlined"
-          onClick={() => navigate('/pesquisas')}
+          onClick={() => navigate(`/pesquisas?hash=${userHash}`)}
           sx={{
             mb: 2,
             py: 1.5,
@@ -238,7 +241,7 @@ const Home = () => {
         <Button
           fullWidth
           variant="contained"
-          onClick={() => navigate('/participar-pesquisas')}
+          onClick={() => navigate(`/participar-pesquisas?hash=${userHash}`)}
           sx={{
             py: 1.5,
             backgroundColor: '#000',
@@ -266,7 +269,7 @@ const Home = () => {
             <Button
               fullWidth
               variant="contained"
-              onClick={() => navigate('/servicos')}
+              onClick={() => navigate(`/servicos?hash=${userHash}`)}
               sx={{
                 py: 1.5,
                 backgroundColor: '#000',
