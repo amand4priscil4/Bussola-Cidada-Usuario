@@ -34,22 +34,14 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Verificar se o usuário existe
-      const user = await usuarioService.verificarUsuario(hashInput.trim());
+      // Verificar/criar usuário automaticamente
+      await usuarioService.verificarUsuario(hashInput.trim());
 
       // Salvar hash no localStorage
       localStorage.setItem('userHash', hashInput.trim());
 
-      // Verificar se o cadastro está completo
-      const cadastroCompleto = user.nome && user.email && user.cadastro_completo;
-
-      if (!cadastroCompleto) {
-        // Se não está completo, redirecionar para cadastro
-        navigate('/cadastro');
-      } else {
-        // Se está completo, ir para Home
-        navigate('/home');
-      }
+      // Ir direto para Home
+      navigate('/home');
 
     } catch (error) {
       console.error('Erro ao fazer login:', error);
