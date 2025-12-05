@@ -34,8 +34,8 @@ const BottomNav = () => {
       </IconButton>
 
       <IconButton
-        onClick={() => navigate('/')}
-        sx={{ color: location.pathname === '/' ? '#000' : '#999' }}
+        onClick={() => navigate('/home')}
+        sx={{ color: location.pathname === '/home' ? '#000' : '#999' }}
       >
         <HomeIcon sx={{ fontSize: 32 }} />
       </IconButton>
@@ -51,7 +51,8 @@ const BottomNav = () => {
         onClick={() => {
           // Limpar dados e fazer logout
           localStorage.removeItem('userHash');
-          navigate('/login');
+          localStorage.removeItem('userData');
+          navigate('/');
         }}
         sx={{ color: '#999' }}
       >

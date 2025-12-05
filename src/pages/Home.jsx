@@ -32,7 +32,7 @@ const Home = () => {
   useEffect(() => {
     // Se não há hash, redirecionar para login
     if (!userHash) {
-      navigate('/login');
+      navigate('/');
       return;
     }
 
@@ -47,11 +47,9 @@ const Home = () => {
       // Verificar/buscar dados do usuário pelo hash do QR Code
       const user = await usuarioService.verificarUsuario(userHash);
 
-      // Verificar se há campos obrigatórios nulos (nome, email, data_nascimento)
-      // Se houver algum campo null, significa que o cadastro está incompleto
-      const temCamposNulos = !user.nome || !user.email || !user.cadastro_completo;
-
-      if (temCamposNulos) {
+      // Verificar se o cadastro está completo
+      // Se qualquer campo obrigatório estiver vazio, redirecionar para cadastro
+      if (!user.cadastro_completo) {
         // Redirecionar para tela de cadastro para completar os dados
         navigate('/cadastro');
         return;

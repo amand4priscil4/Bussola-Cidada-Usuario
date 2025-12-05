@@ -48,7 +48,7 @@ const Login = () => {
         navigate('/cadastro');
       } else {
         // Se está completo, ir para Home
-        navigate('/');
+        navigate('/home');
       }
 
     } catch (error) {

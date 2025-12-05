@@ -32,7 +32,7 @@ const Cadastro = () => {
   useEffect(() => {
     // Se não há hash, redirecionar para login
     if (!userHash) {
-      navigate('/login');
+      navigate('/');
     }
   }, [userHash, navigate]);
 
@@ -100,9 +100,8 @@ const Cadastro = () => {
       // Salvar dados do usuário no localStorage
       localStorage.setItem('userData', JSON.stringify(resultado));
 
-      // Recarregar a página para atualizar o estado
-      // e redirecionar para a Home
-      window.location.href = '/';
+      // Redirecionar para a Home
+      navigate('/home');
 
     } catch (error) {
       console.error('Erro ao completar cadastro:', error);
